@@ -35,7 +35,7 @@ contract Test1 {
         return (student.name, student.number, student.score, student.grade);
     }
 
-    function calculateGrade(uint256 _score) internal pure returns (string memory) {
+    function calculateGrade(uint _score) internal pure returns (string memory) {
         if (_score >= 90) {
             return "A";
         } else if (_score >= 80) {
