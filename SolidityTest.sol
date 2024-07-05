@@ -20,7 +20,7 @@ contract Test1 {
     }
 
     mapping(uint => Student) public students;
-    uint[] public studentNumbers;
+    
 
     function addStudent(string memory _name, uint _number, uint _score) public {
         string memory grade = calculateGrade(_score);
