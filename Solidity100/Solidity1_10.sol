@@ -69,6 +69,18 @@ contract Q5 {
         4~6을 입력하면 입력한 수의 2배를 반환받습니다.
         7~9를 입력하면 입력한 수를 3으로 나눈 나머지를 반환받습니다.
     */
+
+    function ifNum(uint _n) public pure returns(uint) {
+        if(0<_n && _n<=3) {
+            return _n**2;
+        } else if(3<_n && _n<=6) {
+            return _n*2;
+        } else if(6<_n && _n<=9) {
+            return _n%3;
+        } else {
+            return 0;
+        }
+    }
 }
 
 contract Q6 {
