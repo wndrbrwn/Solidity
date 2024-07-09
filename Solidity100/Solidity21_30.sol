@@ -6,6 +6,13 @@ contract Q21 {
     /* 
         3의 배수만 들어갈 수 있는 array를 구현하세요.
     */
+    uint[] numbers;
+
+    function three(uint _n) public {
+        if(_n%3==0) {
+            numbers.push(_n);
+        }
+    }
 }
 
 contract Q22 {
@@ -20,18 +27,45 @@ contract Q23 {
     /* 
         3의 배수라면 “A”를, 나머지가 1이 있다면 “B”를, 나머지가 2가 있다면 “C”를 반환하는 함수를 구현하세요.
     */
+    function getGrade(uint _n) public pure returns(string memory) {
+        if(_n%3==0) {
+            return "A";
+        } else if(_n%3==1) {
+            return "B";
+        } else {
+            return "C";
+        }
+    }
 }
 
 contract Q24 {
     /* 
         string을 input으로 받는 함수를 구현하세요. “Alice”가 들어왔을 때에만 true를 반환하세요.
     */
+
+    function ifTrue(string memory _name) public pure returns(bool) {
+        return keccak256(bytes(_name)) == keccak256(bytes("Alice"));
+    }
 }
 
 contract Q25 {
     /* 
         배열 A를 선언하고 해당 배열에 n부터 0까지 자동으로 넣는 함수를 구현하세요.  
     */
+
+    uint[] A;
+
+    function setA(uint _n) public {
+        for(uint i=_n; i>=0; i--) {
+            A.push(i);
+            if (i == 0) break;
+        }
+      
+    }
+
+    function getA() public view returns(uint[] memory) {
+        return A;}
+    
 }
 
 contract Q26 {
