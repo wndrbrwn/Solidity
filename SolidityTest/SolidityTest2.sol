@@ -53,9 +53,9 @@ struct Student {
         return totalScore / students.length;
     }
 
-    function getStudent(uint _n) public view returns (uint, string memory, uint) {
+    function getStudent(uint _n) public view returns (Student memory) {
       require(_n-1 < students.length, "Student index out of bounds");
-        return (students[_n-1].number, students[_n-1].name, students[_n-1].score);
+        return students[_n-1];
     }
 
     function getAllStudents() public view returns (Student[] memory) {
