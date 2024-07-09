@@ -21,8 +21,8 @@ struct Student {
         uint score;
     }
 
-    Student[] students;
-    uint totalScore;
+    Student[]  students;
+    uint  totalScore;
 
     function addStudent(uint _number, string memory _name, uint _score) public {
         students.push(Student(_number, _name, _score));
@@ -30,7 +30,7 @@ struct Student {
     }
 
     function getLowestScoreStudent() public view returns (uint, string memory, uint) {
-            
+        require(students.length > 0, "No students");    
         uint lowestScore = students[0].score;
         uint lowestIndex = 0;
         
@@ -49,12 +49,13 @@ struct Student {
     }
 
     function getAverageScore() public view returns (uint) {
+         require(students.length > 0, "No students");
         return totalScore / students.length;
     }
 
     function getStudent(uint _n) public view returns (uint, string memory, uint) {
-      
-        return (students[_n].number, students[_n].name, students[_n].score);
+      require(_n < students.length, "Student index out of bounds");
+        return (students[_n-1].number, students[_n-1].name, students[_n-1].score);
     }
 
     function getAllStudents() public view returns (Student[] memory) {
