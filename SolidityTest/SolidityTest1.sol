@@ -45,13 +45,28 @@ Jane,10,70
     }
 
     Student[] students;
-    Student[] FStudents;
-    mapping(string => Student) public mapStudents;
-    
+   
+    function pushStudent() public {
+        string[] memory emptyClasses = new string[](0);
+        setStudent("Alice", 85, emptyClasses);
+        setStudent("Bob", 75, emptyClasses);
+        setStudent("Charlie", 60, emptyClasses);
+        setStudent("Dwayne", 90, emptyClasses);
+        setStudent("Ellen", 65, emptyClasses);
+        setStudent("Fitz", 50, emptyClasses);
+        setStudent("Garret", 80, emptyClasses);
+        setStudent("Hubert", 90, emptyClasses);
+        setStudent("Isabel", 100, emptyClasses);
+        setStudent("Jane", 70, emptyClasses);
+    }
 
-    function setStudent(string memory _name, uint _number, uint _score, string[] memory _classes) public {
+    function initStudent() public {
+        delete students;
+    }
+
+    function setStudent(string memory _name, uint _score, string[] memory _classes) public {
               
-        students.push(Student(_name, _number, _score, setGrade(_score), _classes));
+        students.push(Student(_name, students.length+1, _score, setGrade(_score), _classes));
         
     }
 
@@ -74,12 +89,18 @@ Jane,10,70
         return students[_n-1];
     }
 
-    function getStudentB(string memory _name) public view returns(Student memory) {
-        return mapStudents[_name];
+    function getStudentByName(string memory _name) public view returns (Student memory) {
+        for (uint i = 0; i < students.length; i++) {
+            if (keccak256(abi.encodePacked(students[i].name)) == keccak256(abi.encodePacked(_name))) {
+                return students[i];
+            }
+        }
+        revert("Student not found");
     }
 
-    function getScore(string memory _name) public view returns(uint) {
-        return mapStudents[_name].score;
+    function getStudentScore(string memory _name) public view returns (uint) {
+        Student memory student = getStudentByName(_name);
+        return student.score;
     }
 
     function getStudentNumber() public view returns(uint){
@@ -106,17 +127,42 @@ Jane,10,70
         }
     }
 
-    function setFStudents() public {
-        for(uint i=0; i<students.length; i++) {
-            if(students[i].score < 60) {
-                FStudents.push();
+   function getFStudents() public view returns (uint, Student[] memory) {
+        uint FCount = 0;
+        for (uint i = 0; i < students.length; i++) {
+            if (keccak256(abi.encodePacked(students[i].grade)) == keccak256(abi.encodePacked("F"))) {
+                FCount++;
             }
         }
 
-        
+        Student[] memory Fstudents = new Student[](FCount);
+        uint index = 0;
+        for (uint i = 0; i < students.length; i++) {
+            if (keccak256(abi.encodePacked(students[i].grade)) == keccak256(abi.encodePacked("F"))) {
+                Fstudents[index] = students[i];
+                index++;
+            }
+        }
+
+        return (FCount, Fstudents);
     }
-    function getFStudents() public view returns(uint, Student[] memory) {
-        return (FStudents.length, FStudents);
+
+    function sClass() public view returns(Student[] memory) {
+    Student[] memory _students = students;
+    for(uint i=0; i<_students.length; i++) {
+        for(uint j=i+1; j<_students.length; j++) {
+            if(_students[i].score < _students[j].score) {
+                (_students[i], _students[j]) = (_students[j], _students[i]);
+            }
+        }
     }
+
+    Student[] memory _s = new Student[](4);
+    for(uint i=0; i<4; i++) {
+        _s[i] = _students[i];
+    }
+
+    return _s;
+}
     
 }
