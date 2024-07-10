@@ -29,7 +29,7 @@ struct Student {
         totalScore += _score;
     }
 
-    function getLowestScoreStudent() public view returns (uint, string memory, uint) {
+    function getLowestScoreStudent() public view returns (Student memory) {
         require(students.length > 0, "No students");    
         uint lowestScore = students[0].score;
         uint lowestIndex = 0;
@@ -41,7 +41,7 @@ struct Student {
             }
         }
         
-        return (students[lowestIndex].number, students[lowestIndex].name, students[lowestIndex].score);
+        return students[lowestIndex];
     }
 
     function getTotalScore() public view returns (uint) {
