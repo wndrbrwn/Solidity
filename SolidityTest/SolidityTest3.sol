@@ -23,7 +23,7 @@ abi.encodePacked() 사용하기
 */
 
     mapping(string => bytes32) private Password;
-    mapping(string => uint256) private loginAttempts;
+    mapping(string => uint) private loginAttempts;
 
     function register(string memory _id, string memory _password) public {
         require(Password[_id] == bytes32(0), "User ID already exists");
