@@ -61,6 +61,6 @@ abi.encodePacked() 사용하기
         return true;
     }
 
-    // function에 public view returns를 넣으니 에러가 뜹니다. mapping으로 선언해준 변수가 상태를 변하게 하는 것이 이유같은데, 이것을 어떻게 고쳐야할지 모르겠습니다.
+    
 }
 
