@@ -61,6 +61,6 @@ abi.encodePacked() 사용하기
         return true;
     }
 
-    
+    //loginAttempts를 2중 맵핑으로 묶어서, bytes32 대신 array를 사용해보자
 }
 
