@@ -42,10 +42,7 @@ struct User {
 
     address  owner;
     uint  userCount;
-    uint  ENTRY_FEE = 0.01 ether;
-    uint  SCORE_TO_ETH_RATE = 10;
-    uint  ETH_REWARD = 0.1 ether;
-
+    
     mapping(address => User) users;
     address[4] currentRoom;
     uint roomCount;
@@ -65,10 +62,10 @@ struct User {
 
     function enterGame() external payable {
         
-        if (users[msg.sender].balance >= ENTRY_FEE) {
-            users[msg.sender].balance -= ENTRY_FEE;
+        if (users[msg.sender].balance >= 0.01 ether) {
+            users[msg.sender].balance -= 0.01 ether;
         } else {
-            users[msg.sender].balance += msg.value - ENTRY_FEE;
+            users[msg.sender].balance += msg.value - 0.01 ether;
         }
 
         currentRoom[roomCount] = msg.sender;
@@ -85,8 +82,8 @@ struct User {
 
     function exchangeScore() external {
         User storage user = users[msg.sender];
-        uint exchangeableScore = user.score - (user.score % SCORE_TO_ETH_RATE);
-        uint ethAmount = (exchangeableScore / SCORE_TO_ETH_RATE) * ETH_REWARD;
+        uint exchangeableScore = user.score - (user.score % 10);
+        uint ethAmount = (exchangeableScore / 10) * 0.1 ether;
         user.score -= exchangeableScore;
         payable(msg.sender).transfer(ethAmount);
     }
