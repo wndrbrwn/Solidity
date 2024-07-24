@@ -17,9 +17,7 @@ contract Q41{
     }
 
     function resetArray() public {
-        for(uint i=0; i<4; i++) {
-            numbers[i] = 0;
-        }
+        delete numbers;
         currentIndex = 0;
     }
 }
