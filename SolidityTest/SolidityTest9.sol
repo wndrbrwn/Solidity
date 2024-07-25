@@ -50,14 +50,13 @@ function Password(string memory password) public pure returns (bool) {
 //다른 방식 추가
 function Password2(string memory password) public pure returns (bool) {
         bytes memory passwordBytes = bytes(password);
-        uint flag;
-        uint length = passwordBytes.length;
-         
+        uint8 flag;
+                 
          if (passwordBytes.length < 8) {
             return false;
         }
 
-        for (uint i = 0; i < length; i++) {
+        for (uint i = 0; i < passwordBytes.length; i++) {
             bytes1 char = passwordBytes[i];
             
             if (char >= 0x41 && char <= 0x5A) {
