@@ -15,9 +15,15 @@ function Password(string memory password) public pure returns (bool) {
         bool Uppercase;
         bool Lowercase;
         bool Number;
+        bool Special;
 
         for (uint i = 0; i < passwordBytes.length; i++) {
             bytes1 char = passwordBytes[i];
+            
+            //최소 8자리 검사 추가
+            if (passwordBytes.length < 8) {
+            return false;
+        }   
             
             if (char >= 0x41 && char <= 0x5A) {
                 Uppercase = true;
@@ -25,9 +31,15 @@ function Password(string memory password) public pure returns (bool) {
                 Lowercase = true;
             } else if (char >= 0x30 && char <= 0x39) {
                 Number = true;
-            }
-
-            if (Uppercase && Lowercase && Number) {
+            } 
+            //특수문자 검사 추가
+            else if ((char >= 0x21 && char <= 0x2F) || 
+                       (char >= 0x3A && char <= 0x40) || 
+                       (char >= 0x5B && char <= 0x60) || 
+                       (char >= 0x7B && char <= 0x7E)) {
+                Special = true;
+            } 
+            if (Uppercase && Lowercase && Number && Special) {
                 return true;
             }
         }
@@ -40,6 +52,10 @@ function Password2(string memory password) public pure returns (bool) {
         bytes memory passwordBytes = bytes(password);
         uint flag;
         uint length = passwordBytes.length;
+         
+         if (passwordBytes.length < 8) {
+            return false;
+        }
 
         for (uint i = 0; i < length; i++) {
             bytes1 char = passwordBytes[i];
@@ -50,9 +66,14 @@ function Password2(string memory password) public pure returns (bool) {
                 flag |= 0x2;
             } else if (char >= 0x30 && char <= 0x39) {
                 flag |= 0x4;
+            } else if ((char >= 0x21 && char <= 0x2F) || 
+                       (char >= 0x3A && char <= 0x40) || 
+                       (char >= 0x5B && char <= 0x60) || 
+                       (char >= 0x7B && char <= 0x7E)) {
+                flag |= 0x8; 
             }
 
-            if (flag == 0x7) {
+            if (flag == 0xF) {
                 return true;
             }
         }
