@@ -34,4 +34,29 @@ function Password(string memory password) public pure returns (bool) {
 
         return false;
     }
-}
+
+//다른 방식 추가
+function Password2(string memory password) public pure returns (bool) {
+        bytes memory passwordBytes = bytes(password);
+        uint flag;
+        uint length = passwordBytes.length;
+
+        for (uint i = 0; i < length; i++) {
+            bytes1 char = passwordBytes[i];
+            
+            if (char >= 0x41 && char <= 0x5A) {
+                flag |= 0x1;
+            } else if (char >= 0x61 && char <= 0x7A) {
+                flag |= 0x2;
+            } else if (char >= 0x30 && char <= 0x39) {
+                flag |= 0x4;
+            }
+
+            if (flag == 0x7) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+}    
