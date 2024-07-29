@@ -26,32 +26,35 @@ contract Test10{
         owner = msg.sender;
     }
 
-    function buyTicket(uint8[4] memory _numbers, bytes1[2] memory _characters) public {
-        require(address(this).balance >= TICKET_PRICE, "Contract doesn't have enough balance");
-        ticketNumbers[msg.sender] = _numbers;
-        ticketCharacters[msg.sender] = _characters;
-        emit TicketBought(msg.sender);
+    function buyTicket(uint8 n1, uint8 n2, uint8 n3, uint8 n4, string memory c1, string memory c2) public {
+    require(address(this).balance >= TICKET_PRICE, "Contract doesn't have enough balance");
+    
+    ticketNumbers[msg.sender] = [n1, n2, n3, n4];
+    ticketCharacters[msg.sender] = [bytes1(bytes(c1)[0]), bytes1(bytes(c2)[0])];
+    
+    emit TicketBought(msg.sender);
     }
 
-    function drawLottery(uint8[4] memory _winningNumbers, bytes1[2] memory _winningCharacters) public {
-        require(msg.sender == owner, "Only owner can draw lottery");
-        winningNumbers = _winningNumbers;
-        winningCharacters = _winningCharacters;
-        
-        uint matches = checkMatches(msg.sender);
-        uint prize;
-        
-        if (matches == 6) prize = 1 ether;
-        else if (matches == 5) prize = 0.75 ether;
-        else if (matches == 4) prize = 0.25 ether;
-        else if (matches == 3) prize = 0.1 ether;
+    function drawLottery(uint8 n1, uint8 n2, uint8 n3, uint8 n4, string memory c1, string memory c2) public {
+    require(msg.sender == owner, "Only owner can draw lottery");
+    
+    winningNumbers = [n1, n2, n3, n4];
+    winningCharacters = [bytes1(bytes(c1)[0]), bytes1(bytes(c2)[0])];
+    
+    uint256 matches = checkMatches(msg.sender);
+    uint256 prize;
+    
+    if (matches == 6) prize = 1 ether;
+    else if (matches == 5) prize = 0.75 ether;
+    else if (matches == 4) prize = 0.25 ether;
+    else if (matches == 3) prize = 0.1 ether;
 
-        if (prize > 0) {
-            require(address(this).balance >= prize, "Contract doesn't have enough balance for prize");
-            payable(msg.sender).transfer(prize);
-            emit PrizePaid(msg.sender, prize);
-        }
+    if (prize > 0) {
+        require(address(this).balance >= prize, "Contract doesn't have enough balance for prize");
+        payable(msg.sender).transfer(prize);
+        emit PrizePaid(msg.sender, prize);
     }
+}
 
     function checkMatches(address player) public view returns (uint) {
         uint matches = 0;
