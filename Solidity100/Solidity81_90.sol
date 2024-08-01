@@ -28,13 +28,19 @@ contract Q82 {
 /*
 특정 숫자를 입력했을 때 그 숫자까지의 3,5,8의 배수의 개수를 알려주는 함수를 구현하세요.
 */
-    function countMultiples(uint num) external pure returns (uint count) {
+    function countMultiples(uint num) external pure returns (uint count3, uint count5, uint count8) {
         for (uint i = 1; i <= num; i++) {
-            if (i % 3 == 0 || i % 5 == 0 || i % 8 == 0) {
-                count++;
+            if (i % 3 == 0) {
+                count3++;
+            }
+            if (i % 5 == 0) {
+                count5++;
+            }
+            if (i % 8 == 0) {
+                count8++;
             }
         }
-        return count;
+        return (count3, count5, count8);
     }
 }
 
@@ -103,15 +109,20 @@ contract Q85 {
     uint public forVotes;
     uint public againstVotes;
     uint public endBlock;
-
     bool public votingOpen = true;
 
     modifier onlyDuringVoting() {
-        require(block.number <= endBlock && votingOpen, "Voting closed");
+        require(block.number <= endBlock && votingOpen, "Voting closed or expired");
+        _;
+    }
+
+    modifier onlyOwner() {
+        require(msg.sender == owner, "Only owner can call this function");
         _;
     }
 
     constructor() {
+        owner = msg.sender;
         endBlock = block.number + 20; 
     }
 
@@ -123,12 +134,11 @@ contract Q85 {
         againstVotes++;
     }
 
-    function closeVoting() external {
-        require(msg.sender == owner, "Only owner can close voting");
+    function closeVoting() external onlyOwner {
+        require(block.number > endBlock || !votingOpen, "Voting is still open");
         votingOpen = false;
     }
 }
-
 contract Q86 {
 /*
 숫자 변수 2개를 구현하세요. 한개는 찬성표 나머지 하나는 반대표의 숫자를 나타내는 변수입니다. 
@@ -211,10 +221,8 @@ contract OWNER {
 }
 힌트 : 상속
 */
-    string public someData;
-
-    function setData(string memory _data) external {
-        someData = _data;
+    function setOwner() public {
+        setInternal(msg.sender);
     }
 
 }
@@ -242,12 +250,14 @@ contract Q90 {
 /*
 당신 지갑의 이름을 알려주세요. 아스키 코드를 이용하여 byte를 string으로 바꿔주세요.
 */
-    function getWalletName() external pure returns (string memory) {
-        bytes32 name = 0x596f757257616c6c65744e616d65;
-        bytes memory nameBytes = new bytes(32);
-        for (uint256 i = 0; i < 32; i++) {
-            nameBytes[i] = name[i];
+    function getName(string calldata walletName) external pure returns (string memory) {
+        bytes memory asciiBytes = new bytes(bytes(walletName).length);
+
+        for (uint i = 0; i < bytes(walletName).length; i++) {
+            asciiBytes[i] = bytes(walletName)[i];
         }
-        return string(nameBytes);
+  
+        return string(asciiBytes);
     }
+
 }
