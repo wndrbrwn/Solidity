@@ -33,7 +33,8 @@ contract Q72 {
     address public owner;
     uint public highestDeposit;
     mapping(address => uint) public balances;
-
+    mapping(address => bool) public drawn;
+    
     constructor() {
         owner = msg.sender;
     }
@@ -49,6 +50,9 @@ contract Q72 {
     function withdraw(uint _amount) public {
         require(msg.sender == owner, "Only owner can withdraw");
         require(_amount <= address(this).balance, "Insufficient balance");
+        require(!drawn[msg.sender], "Withdrawal already processed");
+
+        drawn[msg.sender] = true;
         payable(owner).transfer(_amount);
     }
 }
@@ -60,6 +64,7 @@ contract Q73 {
     */ 
     address public owner;
     mapping(address => uint) public totalDeposits;
+    mapping(address => bool) public drawn;
 
     constructor() {
         owner = msg.sender;
@@ -75,6 +80,9 @@ contract Q73 {
     function withdraw(uint _amount) public {
         require(msg.sender == owner, "Only owner can withdraw");
         require(_amount <= address(this).balance, "Insufficient balance");
+        require(!drawn[msg.sender], "Withdrawal already processed");
+
+        drawn[msg.sender] = true;
         payable(owner).transfer(_amount);
     }
     
