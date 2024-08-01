@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity >=0.8.2 < 0.9.0;
 
-contract Test10{
+contract Test11{
 /*
 주차정산 프로그램을 만드세요. 주차시간 첫 2시간은 무료, 그 이후는 1분마다 200원(wei)씩 부과합니다. 
 주차료는 차량번호인식을 기반으로 실행됩니다.
