@@ -241,7 +241,11 @@ contract Q80 {
         return value;
     }
 
-    function size() public view returns (uint) {
-        return rear - front;
+    function getQueue() public view returns (uint[] memory) {
+        uint[] memory result = new uint[](rear - front);
+        for (uint i = front; i < rear; i++) {
+            result[i - front] = queue[i];
+        }
+        return result;
     }
 }
