@@ -179,62 +179,35 @@ inline - 상태변수 문자형 letter에 값을 넣는 함수 setLetter를 구�
 
 contract Q99 {
 /*
-inline - 4개의 숫자를 받아서 가장 큰수와 작은 수를 반환하는 함수를 구현하세요.
+inline - bytes4형 b의 값을 정하는 함수 setB를 구현하세요.
 */
-    function findMinMax(uint a, uint b, uint c, uint d) public pure returns (uint max, uint min) {
+    function setB(bytes4 value) public pure returns (bytes4) {
+        bytes4 b;
+        
         assembly {
-            max := a
-            if gt(b, max) {
-                max := b
-            }
-            if gt(c, max) {
-                max := c
-            }
-            if gt(d, max) {
-                max := d
-            }
-
-            min := a
-            if lt(b, min) {
-                min := b
-            }
-            if lt(c, min) {
-                min := c
-            }
-            if lt(d, min) {
-                min := d
-            }
+            b := value
         }
+        
+        return b;
     }
 }
 
 contract Q100 {
 /*
-inline - 4개의 숫자를 받아서 가장 큰수와 작은 수를 반환하는 함수를 구현하세요.
+inline - bytes형 변수 b의 값을 정하는 함수 setB를 구현하세요.
 */
-    function findMinMax(uint a, uint b, uint c, uint d) public pure returns (uint max, uint min) {
+    function setB(bytes memory value) public pure returns (bytes memory) {
+        bytes memory b = new bytes(value.length);
+        
         assembly {
-            max := a
-            if gt(b, max) {
-                max := b
-            }
-            if gt(c, max) {
-                max := c
-            }
-            if gt(d, max) {
-                max := d
-            }
-
-            min := a
-            if lt(b, min) {
-                min := b
-            }
-            if lt(c, min) {
-                min := c
-            }
-            if lt(d, min) {
-                min := d
+            let Ptr := add(value, 0x20)
+            let bPtr := add(b, 0x20)
+            let length := mload(value)
+            for { let i := 0 } lt(i, length) { i := add(i, 0x20) } {
+                mstore(add(bPtr, i), mload(add(Ptr, i)))
             }
         }
+        
+        return b;
     }
 }
